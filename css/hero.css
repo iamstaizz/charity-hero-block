@@ -1,0 +1,358 @@
+/* ==========================================================================
+   Hero block — благодійний фонд
+   Методологія: BEM. Блок незалежний (не залежить від глобальних стилів сторінки),
+   усі значення винесені в custom properties, тож у конструкторі сторінок його
+   можна перефарбувати / перевикористати без правок CSS.
+   Брейкпоінти: ≤599 — телефон (макет 375), 600–1023 — планшет (макет 768),
+   ≥1024 — десктоп (макет 1440).
+   ========================================================================== */
+
+/* ---------- Мінімальний reset (тільки для демо-сторінки) ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+body { margin: 0; }
+
+/* ---------- Токени ---------- */
+.hero {
+  /* Кольори з ТЗ */
+  --hero-bg: #112B4A;
+  --hero-accent: #FFC928;
+  --hero-text: #CDD6E0;
+  --hero-white: #FFFFFF;
+
+  /* Похідні кольори (визначено зі знімків) */
+  --hero-bg-deep: #0E2340;
+  --hero-muted: #5C6B80;
+  --hero-placeholder: #CFD6E1;
+  --hero-placeholder-text: #6E7C92;
+  --hero-outline: rgba(205, 214, 224, 0.42);
+
+  /* Шрифти */
+  --font-display: "Nunito", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Розміри — мобільні за замовчуванням (mobile-first) */
+  --hero-pad-x: 16px;
+  --hero-pad-top: 24px;
+  --hero-pad-bottom: 32px;
+  --hero-container: 1100px;
+
+  --title-size: 26px;
+  --title-lh: 1.1;
+  --text-size: 15.5px;
+  --text-lh: 1.5;
+
+  --btn-h: 52px;
+  --btn-radius: 12px;
+
+  /* Світлова пляма */
+  --glow-x: 260px;
+  --glow-y: -60px;
+  --glow-r: 200px;
+  --glow-opacity: 0.16;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: var(--hero-pad-top) var(--hero-pad-x) var(--hero-pad-bottom);
+  color: var(--hero-text);
+  background-color: var(--hero-bg);
+  background-image: linear-gradient(180deg, var(--hero-bg) 55%, var(--hero-bg-deep) 100%);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Світлова пляма — окремий шар, щоб не заважати контенту */
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: var(--glow-x);
+  top: var(--glow-y);
+  width: calc(var(--glow-r) * 2);
+  height: calc(var(--glow-r) * 2);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle closest-side,
+    rgba(255, 201, 40, var(--glow-opacity)) 0%,
+    rgba(255, 201, 40, calc(var(--glow-opacity) * 0.55)) 30%,
+    rgba(255, 201, 40, calc(var(--glow-opacity) * 0.18)) 60%,
+    rgba(255, 201, 40, 0) 100%
+  );
+  pointer-events: none;
+}
+
+/* ---------- Layout ---------- */
+.hero__container {
+  display: grid;
+  gap: 20px;
+  max-width: var(--hero-container);
+  margin-inline: auto;
+}
+
+.hero__content { min-width: 0; }
+
+/* ---------- Типографіка ---------- */
+.hero__eyebrow {
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--hero-accent);
+}
+
+.hero__title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--title-size);
+  line-height: var(--title-lh);
+  letter-spacing: -0.005em;
+  color: var(--hero-white);
+}
+
+.hero__title-line { display: block; }
+.hero__title-line--accent { color: var(--hero-accent); }
+
+.hero__text {
+  margin: 0 0 18px;
+  max-width: 27em;
+  font-size: var(--text-size);
+  line-height: var(--text-lh);
+  font-weight: 400;
+  color: var(--hero-text);
+}
+
+/* ---------- Кнопки (окремий перевикористовуваний компонент) ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--btn-h, 52px);
+  padding: 0 29px;
+  border: 2px solid transparent;
+  border-radius: var(--btn-radius, 12px);
+  font-family: var(--font-display, "Nunito", sans-serif);
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .2s, border-color .2s, transform .2s, box-shadow .2s;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--hero-accent, #FFC928);
+  outline-offset: 3px;
+}
+
+.btn--primary {
+  background: var(--hero-accent, #FFC928);
+  color: var(--hero-bg, #112B4A);
+}
+.btn--primary:hover {
+  background: #FFD54F;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(255, 201, 40, 0.25);
+}
+
+.btn--outline {
+  background: transparent;
+  border-color: var(--hero-outline, rgba(205, 214, 224, .42));
+  color: var(--hero-white, #fff);
+}
+.btn--outline:hover { border-color: var(--hero-text, #CDD6E0); }
+
+.btn--sm { height: 44px; font-size: 15px; }
+.btn--block { display: flex; width: 100%; }
+
+/* ---------- Дії ---------- */
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+/* ---------- Примітка про довіру ---------- */
+.hero__note {
+  display: none; /* на телефоні прихована — як у макеті */
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--hero-text);
+}
+.hero__note strong { font-weight: 800; color: var(--hero-white); }
+.hero__note-icon { flex: none; color: var(--hero-accent); }
+
+/* ---------- Бейдж ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px 5px 9px;
+  border-radius: 999px;
+  background: var(--hero-accent, #FFC928);
+  color: var(--hero-bg, #112B4A);
+  font-family: var(--font-display, "Nunito", sans-serif);
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+.badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ---------- Картка збору ---------- */
+.fund-card {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  border-radius: 24px;
+  background: var(--hero-white, #fff);
+  box-shadow:
+    0 30px 60px -10px rgba(6, 16, 32, 0.55),
+    0 10px 24px rgba(6, 16, 32, 0.25);
+}
+
+.fund-card__media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--hero-placeholder, #CFD6E1);
+}
+
+.fund-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fund-card__placeholder {
+  font-family: var(--font-body, "Inter", sans-serif);
+  font-size: 22px;
+  color: var(--hero-placeholder-text, #6E7C92);
+}
+
+.fund-card__badge {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  left: 12px;
+}
+
+.fund-card__body { padding: 14px 2px 0; }
+
+.fund-card__title {
+  margin: 0 0 2px;
+  font-family: var(--font-display, "Nunito", sans-serif);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--hero-bg, #112B4A);
+}
+
+.fund-card__text {
+  margin: 0;
+  font-family: var(--font-display, "Nunito", sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--hero-muted, #5C6B80);
+}
+
+.fund-card__cta { margin-top: 24px; }
+
+/* ==========================================================================
+   Планшет ≥600px (макет 768)
+   ========================================================================== */
+@media (min-width: 600px) {
+  .hero {
+    --hero-pad-x: 32px;
+    --hero-pad-top: 60px;
+    --hero-pad-bottom: 54px;
+    --title-size: 44px;
+    --title-lh: 1.08;
+    --text-size: 16px;
+    --text-lh: 1.5;
+    --btn-h: 54px;
+
+    --glow-x: calc(100% - 233px);
+    --glow-y: 20px;
+    --glow-r: 260px;
+    --glow-opacity: 0.42;
+  }
+
+  .hero__eyebrow { margin-bottom: 20px; }
+  .hero__title { margin-bottom: 20px; }
+  .hero__text { margin-bottom: 32px; }
+
+  .hero__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .hero__note { display: flex; }
+
+  .hero__container { row-gap: 32px; }
+
+  .hero__aside { max-width: 460px; }
+}
+
+/* ==========================================================================
+   Десктоп ≥1024px (макет 1440)
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .hero {
+    --hero-pad-top: 88px;
+    --hero-pad-bottom: 88px;
+    --title-size: 59px;
+    --title-lh: 1.15;
+    --text-size: 18px;
+    --text-lh: 1.56;
+
+    --glow-x: calc(100% - 150px);
+    --glow-y: 65px;
+    --glow-r: 320px;
+    --glow-opacity: 0.55;
+  }
+
+  .hero__container {
+    grid-template-columns: minmax(0, 1fr) 500px;
+    align-items: center;
+    column-gap: 64px;
+  }
+
+  .hero__aside { max-width: none; }
+
+  .hero__title { margin-bottom: 24px; }
+  .hero__text { margin-bottom: 30px; }
+  .hero__note { margin-top: 26px; font-size: 14px; }
+}
+
+/* ---------- Доступність ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+  .btn--primary:hover { transform: none; }
+}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Світло для дітей — благодійний фонд</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Nunito:wght@500;800;900&display=swap&subset=cyrillic" rel="stylesheet">
+  <link rel="stylesheet" href="css/hero.css">
+</head>
+<body>
+
+  <!-- Блок конструктора: hero. Розмітку генерує templates/hero.njk -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__container">
+
+      <div class="hero__content">
+        <p class="hero__eyebrow">Український благодійний фонд</p>
+
+        <h1 class="hero__title" id="hero-title">
+          <span class="hero__title-line">Світло для дітей.</span>
+          <span class="hero__title-line hero__title-line--accent">Сила для майбутнього.</span>
+        </h1>
+
+        <p class="hero__text">
+          Ми повертаємо дітям України відчуття безпеки і завтрашнього дня — адресною допомогою
+          та довгостроковими програмами. І звітуємо за кожну гривню.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#donate">Допомогти зараз</a>
+          <a class="btn btn--outline" href="#reports">Дивитися звітність</a>
+        </div>
+
+        <p class="hero__note">
+          <svg class="hero__note-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span><strong>Публічні звіти</strong> щомісяця · відповідь донору за 48 годин</span>
+        </p>
+      </div>
+
+      <article class="hero__aside fund-card">
+        <div class="fund-card__media">
+          <span class="badge fund-card__badge">Активний збір</span>
+          <!-- Заглушка. У продакшні: <img class="fund-card__img" src="..." alt="..."> -->
+          <span class="fund-card__placeholder" aria-hidden="true">Фото</span>
+        </div>
+        <div class="fund-card__body">
+          <h2 class="fund-card__title">Ім'я — назва збору</h2>
+          <p class="fund-card__text">
+            Короткий опис збору: дві-три фрази про те, на що потрібні кошти і чому це важливо саме зараз.
+          </p>
+        </div>
+        <a class="btn btn--primary btn--sm btn--block fund-card__cta" href="#campaign">Долучитися до збору</a>
+      </article>
+
+    </div>
+  </section>
+
+</body>
+</html>

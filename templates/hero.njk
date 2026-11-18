@@ -1,0 +1,59 @@
+{#
+  Hero-блок для конструктора сторінок (Nunjucks; синтаксис сумісний з Jinja2/Twig).
+  Використання:
+    {% from "hero.njk" import hero %}
+    {{ hero(data) }}
+  Усі поля, крім title, необов'язкові. Відсутній блок (note, card, secondary) просто не рендериться.
+#}
+{% macro hero(d) %}
+<section class="hero{% if d.modifier %} hero--{{ d.modifier }}{% endif %}" aria-labelledby="{{ d.id | default('hero') }}-title">
+  <div class="hero__container">
+
+    <div class="hero__content">
+      {% if d.eyebrow %}<p class="hero__eyebrow">{{ d.eyebrow }}</p>{% endif %}
+
+      <h1 class="hero__title" id="{{ d.id | default('hero') }}-title">
+        <span class="hero__title-line">{{ d.title }}</span>
+        {% if d.titleAccent %}<span class="hero__title-line hero__title-line--accent">{{ d.titleAccent }}</span>{% endif %}
+      </h1>
+
+      {% if d.text %}<p class="hero__text">{{ d.text }}</p>{% endif %}
+
+      {% if d.primary or d.secondary %}
+      <div class="hero__actions">
+        {% if d.primary %}<a class="btn btn--primary" href="{{ d.primary.url }}">{{ d.primary.label }}</a>{% endif %}
+        {% if d.secondary %}<a class="btn btn--outline" href="{{ d.secondary.url }}">{{ d.secondary.label }}</a>{% endif %}
+      </div>
+      {% endif %}
+
+      {% if d.note %}
+      <p class="hero__note">
+        <svg class="hero__note-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span><strong>{{ d.note.strong }}</strong> {{ d.note.text }}</span>
+      </p>
+      {% endif %}
+    </div>
+
+    {% if d.card %}
+    <article class="hero__aside fund-card">
+      <div class="fund-card__media">
+        {% if d.card.badge %}<span class="badge fund-card__badge">{{ d.card.badge }}</span>{% endif %}
+        {% if d.card.image %}
+          <img class="fund-card__img" src="{{ d.card.image.src }}" alt="{{ d.card.image.alt }}" loading="lazy">
+        {% else %}
+          <span class="fund-card__placeholder" aria-hidden="true">Фото</span>
+        {% endif %}
+      </div>
+      <div class="fund-card__body">
+        <h2 class="fund-card__title">{{ d.card.title }}</h2>
+        {% if d.card.text %}<p class="fund-card__text">{{ d.card.text }}</p>{% endif %}
+      </div>
+      {% if d.card.cta %}<a class="btn btn--primary btn--sm btn--block fund-card__cta" href="{{ d.card.cta.url }}">{{ d.card.cta.label }}</a>{% endif %}
+    </article>
+    {% endif %}
+
+  </div>
+</section>
+{% endmacro %}
